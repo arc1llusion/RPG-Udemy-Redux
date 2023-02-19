@@ -1,20 +1,14 @@
-using deVoid.Utils;
-using RPG.Combat;
 using RPG.Core;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.InputSystem;
 
 namespace RPG.Movement
 {
-    public class Mover : MonoBehaviour
+    public class Mover : MonoBehaviour, IAction
     {
 
         private NavMeshAgent agent;
         private Animator animator;
-        private Fighter fighter;
         private ActionScheduler scheduler;
 
         // Start is called before the first frame update
@@ -22,7 +16,6 @@ namespace RPG.Movement
         {
             agent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
-            fighter = GetComponent<Fighter>();
             scheduler = GetComponent<ActionScheduler>();
         }
 
@@ -39,7 +32,6 @@ namespace RPG.Movement
 
         public void StartMoveAction(Vector3 destination)
         {
-            fighter.Cancel();
             scheduler.StartAction(this);
             MoveTo(destination);
         }
@@ -50,7 +42,7 @@ namespace RPG.Movement
             agent.destination = destination;
         }
 
-        public void Stop()
+        public void Cancel()
         {
             agent.isStopped = true;
         }
