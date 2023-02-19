@@ -59,7 +59,7 @@ namespace RPG.Control
 
                 if (actions.Main.Movement.WasPressedThisFrame())
                 {
-                    fighter.Attack();
+                    fighter.Attack(target);
                 }
 
                 return true;
@@ -74,7 +74,7 @@ namespace RPG.Control
             {
                 if (actions.Main.Movement.ReadValue<float>() == 1)
                 {
-                    mover.MoveTo(hitInfo.point);
+                    mover.StartMoveAction(hitInfo.point);
                 }
                 return true;
             }

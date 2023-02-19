@@ -1,4 +1,5 @@
 using deVoid.Utils;
+using RPG.Combat;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,12 +13,14 @@ namespace RPG.Movement
 
         private NavMeshAgent agent;
         private Animator animator;
+        private Fighter fighter;
 
         // Start is called before the first frame update
         void Awake()
         {
             agent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
+            fighter = GetComponent<Fighter>();
         }
 
         void Update()
@@ -31,9 +34,21 @@ namespace RPG.Movement
             animator.SetFloat("forwardSpeed", localSpace.z);
         }
 
+        public void StartMoveAction(Vector3 destination)
+        {
+            fighter.Cancel();
+            MoveTo(destination);
+        }
+
         public void MoveTo(Vector3 destination)
         {
+            agent.isStopped = false;
             agent.destination = destination;
+        }
+
+        public void Stop()
+        {
+            agent.isStopped = true;
         }
     }
 }
