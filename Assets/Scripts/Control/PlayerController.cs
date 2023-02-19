@@ -2,6 +2,7 @@ using deVoid.Utils;
 using RPG.Combat;
 using RPG.Movement;
 using RPG.Movement.Signals;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,7 +15,7 @@ namespace RPG.Control
         private Fighter fighter;
 
         private bool moving = false;
-        //private bool mouseLeftButtonPerformed = false;
+        private bool overTarget = false;
 
         private Vector2 mousePosition;
 
@@ -45,35 +46,34 @@ namespace RPG.Control
 
         private void Update()
         {
-            //mouseLeftButtonPerformed = false;
-            InteractWithCombat();
-            InteractWithMovement();
+            if(InteractWithMovement())
+            {
+                return;
+            }
+
+            Debug.Log("Nothing to do");
         }
 
         private void InteractWithCombat()
         {
-            var hits = Physics.RaycastAll(GetMouseRay());
-            foreach (var hit in hits)
+            DetermineTarget(() =>
             {
-                var target = hit.transform.GetComponent<CombatTarget>();
-
-                if(target != null)
-                {
-                    //if(mouseLeftButtonPerformed)
-                    if (Mouse.current.leftButton.wasPressedThisFrame)
-                    {
-                        fighter.Attack();
-                    }
-                }
-            }
+                fighter.Attack();
+            });
         }
 
-        private void InteractWithMovement()
+        private bool InteractWithMovement()
         {
-            if (moving)
+            if (Physics.Raycast(GetMouseRay(), out var hitInfo))
             {
-                MoveToCursor();
+                if (moving && !overTarget)
+                {
+                    mover.MoveTo(hitInfo.point);
+                }
+                return true;
             }
+
+            return false;
         }
 
         private void LateUpdate()
@@ -92,22 +92,35 @@ namespace RPG.Control
                 moving = false;
             }
 
-            //if(context.performed)
-            //{
-            //    mouseLeftButtonPerformed = true;
-            //}
+            if (context.performed)
+            {
+                InteractWithCombat();
+            }
         }
 
         public void OnMousePosition(InputAction.CallbackContext context)
         {
             mousePosition = context.ReadValue<Vector2>();
+            overTarget = false;
+
+            DetermineTarget(() =>
+            {
+                overTarget = true;
+                //TODO: Cursor affordance
+            });
         }
 
-        private void MoveToCursor()
+        private void DetermineTarget(Action cb)
         {
-            if (Physics.Raycast(GetMouseRay(), out var hitInfo))
+            var hits = Physics.RaycastAll(GetMouseRay());
+            foreach (var hit in hits)
             {
-                mover.MoveTo(hitInfo.point);
+                var target = hit.transform.GetComponent<CombatTarget>();
+
+                if (target != null)
+                {
+                    cb?.Invoke();
+                }
             }
         }
 
