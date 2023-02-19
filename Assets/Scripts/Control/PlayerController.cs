@@ -14,9 +14,6 @@ namespace RPG.Control
         private Mover mover;
         private Fighter fighter;
 
-        private bool moving = false;
-        private bool overTarget = false;
-
         private Vector2 mousePosition;
 
         private ChangePlayerPositionSignal changePlayerPositionSignal;
@@ -46,27 +43,36 @@ namespace RPG.Control
 
         private void Update()
         {
-            if(InteractWithMovement())
-            {
-                return;
-            }
+            if (InteractWithCombat()) return;
+            if (InteractWithMovement()) return;
 
             Debug.Log("Nothing to do");
         }
 
-        private void InteractWithCombat()
+        private bool InteractWithCombat()
         {
-            DetermineTarget(() =>
+            var hits = Physics.RaycastAll(GetMouseRay());
+            foreach (var hit in hits)
             {
-                fighter.Attack();
-            });
+                var target = hit.transform.GetComponent<CombatTarget>();
+                if (target == null) continue;
+
+                if (actions.Main.Movement.WasPressedThisFrame())
+                {
+                    fighter.Attack();
+                }
+
+                return true;
+            }
+
+            return false;
         }
 
         private bool InteractWithMovement()
         {
             if (Physics.Raycast(GetMouseRay(), out var hitInfo))
             {
-                if (moving && !overTarget)
+                if (actions.Main.Movement.ReadValue<float>() == 1)
                 {
                     mover.MoveTo(hitInfo.point);
                 }
@@ -83,45 +89,11 @@ namespace RPG.Control
 
         public void OnMovement(InputAction.CallbackContext context)
         {
-            if (context.started)
-            {
-                moving = true;
-            }
-            else if (context.canceled)
-            {
-                moving = false;
-            }
-
-            if (context.performed)
-            {
-                InteractWithCombat();
-            }
         }
 
         public void OnMousePosition(InputAction.CallbackContext context)
         {
             mousePosition = context.ReadValue<Vector2>();
-            overTarget = false;
-
-            DetermineTarget(() =>
-            {
-                overTarget = true;
-                //TODO: Cursor affordance
-            });
-        }
-
-        private void DetermineTarget(Action cb)
-        {
-            var hits = Physics.RaycastAll(GetMouseRay());
-            foreach (var hit in hits)
-            {
-                var target = hit.transform.GetComponent<CombatTarget>();
-
-                if (target != null)
-                {
-                    cb?.Invoke();
-                }
-            }
         }
 
         private Ray GetMouseRay()
