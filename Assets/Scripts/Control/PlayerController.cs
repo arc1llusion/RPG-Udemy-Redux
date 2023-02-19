@@ -1,8 +1,7 @@
 using deVoid.Utils;
+using RPG.Combat;
 using RPG.Movement;
 using RPG.Movement.Signals;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,8 +11,10 @@ namespace RPG.Control
     {
         private Actions actions;
         private Mover mover;
+        private Fighter fighter;
 
         private bool moving = false;
+        //private bool mouseLeftButtonPerformed = false;
 
         private Vector2 mousePosition;
 
@@ -22,6 +23,7 @@ namespace RPG.Control
         void Awake()
         {
             mover = GetComponent<Mover>();
+            fighter = GetComponent<Fighter>();
             changePlayerPositionSignal = Signals.Get<ChangePlayerPositionSignal>();
         }
 
@@ -43,11 +45,37 @@ namespace RPG.Control
 
         private void Update()
         {
+            //mouseLeftButtonPerformed = false;
+            InteractWithCombat();
+            InteractWithMovement();
+        }
+
+        private void InteractWithCombat()
+        {
+            var hits = Physics.RaycastAll(GetMouseRay());
+            foreach (var hit in hits)
+            {
+                var target = hit.transform.GetComponent<CombatTarget>();
+
+                if(target != null)
+                {
+                    //if(mouseLeftButtonPerformed)
+                    if (Mouse.current.leftButton.wasPressedThisFrame)
+                    {
+                        fighter.Attack();
+                    }
+                }
+            }
+        }
+
+        private void InteractWithMovement()
+        {
             if (moving)
             {
                 MoveToCursor();
             }
         }
+
         private void LateUpdate()
         {
             changePlayerPositionSignal.Dispatch(transform.position);
@@ -63,6 +91,11 @@ namespace RPG.Control
             {
                 moving = false;
             }
+
+            //if(context.performed)
+            //{
+            //    mouseLeftButtonPerformed = true;
+            //}
         }
 
         public void OnMousePosition(InputAction.CallbackContext context)
@@ -72,12 +105,15 @@ namespace RPG.Control
 
         private void MoveToCursor()
         {
-            var ray = Camera.main.ScreenPointToRay(mousePosition);
-
-            if (Physics.Raycast(ray, out var hitInfo))
+            if (Physics.Raycast(GetMouseRay(), out var hitInfo))
             {
                 mover.MoveTo(hitInfo.point);
             }
+        }
+
+        private Ray GetMouseRay()
+        {
+            return Camera.main.ScreenPointToRay(mousePosition);
         }
     }
 }
