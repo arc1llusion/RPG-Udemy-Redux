@@ -1,29 +1,34 @@
 using deVoid.Utils;
+using RPG.Movement.Signals;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FollowCamera : MonoBehaviour
+namespace RPG.Core
 {
-    private ChangePlayerPositionSignal changePlayerPositionSignal;
-    // Start is called before the first frame update
-    void Start()
+    public class FollowCamera : MonoBehaviour
     {
-        changePlayerPositionSignal = Signals.Get<ChangePlayerPositionSignal>();
-        changePlayerPositionSignal.AddListener(Follow);
-    }
-
-    private void Follow(Vector3 position)
-    {
-        transform.position = position;
-    }
-
-    private void OnDestroy()
-    {
-        if (changePlayerPositionSignal != null)
+        private ChangePlayerPositionSignal changePlayerPositionSignal;
+        // Start is called before the first frame update
+        void Start()
         {
-            changePlayerPositionSignal.RemoveListener(Follow);
+            changePlayerPositionSignal = Signals.Get<ChangePlayerPositionSignal>();
+            changePlayerPositionSignal.AddListener(Follow);
+        }
+
+        private void Follow(Vector3 position)
+        {
+            transform.position = position;
+        }
+
+        private void OnDestroy()
+        {
+            if (changePlayerPositionSignal != null)
+            {
+                changePlayerPositionSignal.RemoveListener(Follow);
+            }
         }
     }
+
 }

@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChangePlayerPositionSignal : ASignal<Vector3>
+namespace RPG.Movement.Signals
 {
+    public class ChangePlayerPositionSignal : ASignal<Vector3>
+    {
+    }
 }

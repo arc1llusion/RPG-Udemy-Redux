@@ -1,79 +1,83 @@
 using deVoid.Utils;
+using RPG.Movement;
+using RPG.Movement.Signals;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour, Actions.IMainActions
+namespace RPG.Control
 {
-    private Actions actions;
-    private Mover mover;
-
-    private bool moving = false;
-
-    private Vector2 mousePosition;
-
-    private ChangePlayerPositionSignal changePlayerPositionSignal;
-
-    void Start()
+    public class PlayerController : MonoBehaviour, Actions.IMainActions
     {
-        mover = GetComponent<Mover>();
+        private Actions actions;
+        private Mover mover;
 
-        changePlayerPositionSignal = Signals.Get<ChangePlayerPositionSignal>();
-    }
+        private bool moving = false;
 
-    private void OnEnable()
-    {
-        if (actions == null)
+        private Vector2 mousePosition;
+
+        private ChangePlayerPositionSignal changePlayerPositionSignal;
+
+        void Awake()
         {
-            actions = new Actions();
+            mover = GetComponent<Mover>();
+            changePlayerPositionSignal = Signals.Get<ChangePlayerPositionSignal>();
         }
-        actions.Main.SetCallbacks(this);
-        actions.Enable();
-    }
 
-    private void OnDisable()
-    {
-        actions.Disable();
-        actions = null;
-    }
-
-    private void Update()
-    {
-        if (moving)
+        private void OnEnable()
         {
-            MoveToCursor();
+            if (actions == null)
+            {
+                actions = new Actions();
+            }
+            actions.Main.SetCallbacks(this);
+            actions.Enable();
         }
-    }
-    private void LateUpdate()
-    {
-        changePlayerPositionSignal.Dispatch(transform.position);
-    }
 
-    public void OnMovement(InputAction.CallbackContext context)
-    {
-        if (context.started)
+        private void OnDisable()
         {
-            moving = true;
+            actions.Disable();
+            actions = null;
         }
-        else if (context.canceled)
+
+        private void Update()
         {
-            moving = false;
+            if (moving)
+            {
+                MoveToCursor();
+            }
         }
-    }
-
-    public void OnMousePosition(InputAction.CallbackContext context)
-    {
-        mousePosition = context.ReadValue<Vector2>();
-    }
-
-    private void MoveToCursor()
-    {
-        var ray = Camera.main.ScreenPointToRay(mousePosition);
-
-        if (Physics.Raycast(ray, out var hitInfo))
+        private void LateUpdate()
         {
-            mover.MoveTo(hitInfo.point);
+            changePlayerPositionSignal.Dispatch(transform.position);
+        }
+
+        public void OnMovement(InputAction.CallbackContext context)
+        {
+            if (context.started)
+            {
+                moving = true;
+            }
+            else if (context.canceled)
+            {
+                moving = false;
+            }
+        }
+
+        public void OnMousePosition(InputAction.CallbackContext context)
+        {
+            mousePosition = context.ReadValue<Vector2>();
+        }
+
+        private void MoveToCursor()
+        {
+            var ray = Camera.main.ScreenPointToRay(mousePosition);
+
+            if (Physics.Raycast(ray, out var hitInfo))
+            {
+                mover.MoveTo(hitInfo.point);
+            }
         }
     }
 }

@@ -5,32 +5,35 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
-public class Mover : MonoBehaviour
+namespace RPG.Movement
 {
-
-    private NavMeshAgent agent;
-    private Animator animator;
-
-    // Start is called before the first frame update
-    void Start()
+    public class Mover : MonoBehaviour
     {
-        agent = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
-    }
 
-    void Update()
-    {
-        UpdateAnimator();
-    }
+        private NavMeshAgent agent;
+        private Animator animator;
 
-    private void UpdateAnimator()
-    {
-        var localSpace = transform.InverseTransformDirection(agent.velocity);
-        animator.SetFloat("forwardSpeed", localSpace.z);
-    }
+        // Start is called before the first frame update
+        void Awake()
+        {
+            agent = GetComponent<NavMeshAgent>();
+            animator = GetComponent<Animator>();
+        }
 
-    public void MoveTo(Vector3 destination)
-    {
-        agent.destination = destination;
+        void Update()
+        {
+            UpdateAnimator();
+        }
+
+        private void UpdateAnimator()
+        {
+            var localSpace = transform.InverseTransformDirection(agent.velocity);
+            animator.SetFloat("forwardSpeed", localSpace.z);
+        }
+
+        public void MoveTo(Vector3 destination)
+        {
+            agent.destination = destination;
+        }
     }
 }
