@@ -1,5 +1,6 @@
 using deVoid.Utils;
 using RPG.Combat;
+using RPG.Core;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,7 @@ namespace RPG.Movement
         private NavMeshAgent agent;
         private Animator animator;
         private Fighter fighter;
+        private ActionScheduler scheduler;
 
         // Start is called before the first frame update
         void Awake()
@@ -21,6 +23,7 @@ namespace RPG.Movement
             agent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
             fighter = GetComponent<Fighter>();
+            scheduler = GetComponent<ActionScheduler>();
         }
 
         void Update()
@@ -37,6 +40,7 @@ namespace RPG.Movement
         public void StartMoveAction(Vector3 destination)
         {
             fighter.Cancel();
+            scheduler.StartAction(this);
             MoveTo(destination);
         }
 

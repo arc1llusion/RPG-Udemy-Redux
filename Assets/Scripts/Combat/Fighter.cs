@@ -1,16 +1,14 @@
+using RPG.Core;
 using RPG.Movement;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace RPG.Combat
 {
     public class Fighter : MonoBehaviour
     {
         private Transform target;
-        private Mover mover;
+        private Mover mover; 
+        private ActionScheduler scheduler;        
 
         [SerializeField]
         private float weaponRange = 2.0f;
@@ -18,6 +16,7 @@ namespace RPG.Combat
         private void Awake()
         {
             mover = GetComponent<Mover>();
+            scheduler = GetComponent<ActionScheduler>();
         }
 
         private void Update()
@@ -36,6 +35,7 @@ namespace RPG.Combat
 
         public void Attack(CombatTarget ct)
         {
+            scheduler.StartAction(this);
             target = ct.transform;
         }
 
