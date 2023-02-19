@@ -2,44 +2,24 @@ using deVoid.Utils;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
-public class Mover : MonoBehaviour, Actions.IMainActions
+public class PlayerController : MonoBehaviour, Actions.IMainActions
 {
     private Actions actions;
-
-    private NavMeshAgent agent;
-    private Animator animator;
-
-    private Vector2 mousePosition;
+    private Mover mover;
 
     private bool moving = false;
 
+    private Vector2 mousePosition;
+
     private ChangePlayerPositionSignal changePlayerPositionSignal;
 
-    // Start is called before the first frame update
     void Start()
     {
-        agent = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
+        mover = GetComponent<Mover>();
 
         changePlayerPositionSignal = Signals.Get<ChangePlayerPositionSignal>();
-    }
-
-    void Update()
-    {
-        UpdateAnimator();
-
-        if(moving)
-        {
-            MoveToCursor();
-        }
-    }
-
-    private void LateUpdate()
-    {
-        changePlayerPositionSignal.Dispatch(transform.position);
     }
 
     private void OnEnable()
@@ -58,20 +38,16 @@ public class Mover : MonoBehaviour, Actions.IMainActions
         actions = null;
     }
 
-    private void UpdateAnimator()
+    private void Update()
     {
-        var localSpace = transform.InverseTransformDirection(agent.velocity);
-        animator.SetFloat("forwardSpeed", localSpace.z);
-    }
-
-    private void MoveToCursor()
-    {
-        var ray = Camera.main.ScreenPointToRay(mousePosition);
-
-        if (Physics.Raycast(ray, out var hitInfo))
+        if (moving)
         {
-            agent.destination = hitInfo.point;
+            MoveToCursor();
         }
+    }
+    private void LateUpdate()
+    {
+        changePlayerPositionSignal.Dispatch(transform.position);
     }
 
     public void OnMovement(InputAction.CallbackContext context)
@@ -80,7 +56,7 @@ public class Mover : MonoBehaviour, Actions.IMainActions
         {
             moving = true;
         }
-        else if(context.canceled)
+        else if (context.canceled)
         {
             moving = false;
         }
@@ -89,5 +65,15 @@ public class Mover : MonoBehaviour, Actions.IMainActions
     public void OnMousePosition(InputAction.CallbackContext context)
     {
         mousePosition = context.ReadValue<Vector2>();
+    }
+
+    private void MoveToCursor()
+    {
+        var ray = Camera.main.ScreenPointToRay(mousePosition);
+
+        if (Physics.Raycast(ray, out var hitInfo))
+        {
+            mover.MoveTo(hitInfo.point);
+        }
     }
 }
