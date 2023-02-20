@@ -91,6 +91,10 @@ namespace RPG.Control
         {
         }
 
+        public void OnAttack(InputAction.CallbackContext context)
+        {
+        }
+
         public void OnMousePosition(InputAction.CallbackContext context)
         {
             mousePosition = context.ReadValue<Vector2>();
