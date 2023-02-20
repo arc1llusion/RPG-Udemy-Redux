@@ -6,7 +6,7 @@ namespace RPG.Combat
 {
     public class Fighter : MonoBehaviour, IAction
     {
-        private Transform target;
+        private Health target;
         private Mover mover; 
         private ActionScheduler scheduler;
         private Animator animator;
@@ -31,9 +31,11 @@ namespace RPG.Combat
 
             if (target == null) return;
 
-            if (Vector3.Distance(target.position, transform.position) >= weaponRange)
+            if (target.IsDead()) return;
+
+            if (Vector3.Distance(target.transform.position, transform.position) >= weaponRange)
             {
-                mover.MoveTo(target.position);
+                mover.MoveTo(target.transform.position);
             }
             else
             {
@@ -57,22 +59,19 @@ namespace RPG.Combat
         {
             if (target == null) return;
 
-            var health = target.transform.GetComponent<Health>();
-
-            if (health == null) return;
-
-            health.TakeDamage(5);
+            target.TakeDamage(5);
         }
 
         public void Attack(CombatTarget ct)
         {
             scheduler.StartAction(this);
-            target = ct.transform;
+            target = ct.GetComponent<Health>();
         }
 
         public void Cancel()
         {
-            target = null;
+            animator.SetTrigger("stopAttack");
+            target = null;            
         }
     }
 }
