@@ -15,6 +15,9 @@ namespace RPG.Combat
         private float weaponRange = 2.0f;
 
         [SerializeField]
+        private float weaponDamage = 5.0f;
+
+        [SerializeField]
         private float timeBetweenAttacks = 1.0f;
         private float timeSinceLastAttack = Mathf.Infinity;
 
@@ -35,7 +38,7 @@ namespace RPG.Combat
 
             if (Vector3.Distance(target.transform.position, transform.position) >= weaponRange)
             {
-                mover.MoveTo(target.transform.position);
+                mover.MoveTo(target.transform.position, 1f);
                 StopAttack();
             }
             else
@@ -62,7 +65,7 @@ namespace RPG.Combat
         {
             if (target == null) return;
 
-            target.TakeDamage(5);
+            target.TakeDamage(weaponDamage);
         }
 
         public bool CanAttack(GameObject combatTarget)

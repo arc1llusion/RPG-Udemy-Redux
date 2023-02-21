@@ -28,6 +28,12 @@ namespace RPG.Control
         [SerializeField]
         private float waypointDwellTime = 2.0f;
 
+        [Range(0, 1)]
+        [SerializeField]
+        private float patrolSpeedFraction = 0.2f;
+
+
+
         private ChangePlayerPositionSignal changePlayerPositionSignal;
         private Fighter fighter;
         private Health health;
@@ -132,7 +138,7 @@ namespace RPG.Control
 
             if(timeSinceArrivedAtWaypoint >= waypointDwellTime)
             {
-                mover.StartMoveAction(nextPosition);
+                mover.StartMoveAction(nextPosition, patrolSpeedFraction);
             }
         }
 

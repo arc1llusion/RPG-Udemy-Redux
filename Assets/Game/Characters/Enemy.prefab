@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 960261784, guid: 379377d08723d2e40bf81f97dd464b5a, type: 3}
+      propertyPath: maxSpeed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 960261785, guid: 379377d08723d2e40bf81f97dd464b5a, type: 3}
       propertyPath: m_Speed
       value: 3
@@ -17,7 +21,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1321978605844894585, guid: 379377d08723d2e40bf81f97dd464b5a, type: 3}
       propertyPath: healthPoints
-      value: 20
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 3481381772715202066, guid: 379377d08723d2e40bf81f97dd464b5a, type: 3}
       propertyPath: m_RootOrder
@@ -121,6 +125,8 @@ MonoBehaviour:
   suspicionTime: 3
   patrolPath: {fileID: 0}
   waypointTolerance: 0.5
+  waypointDwellTime: 2
+  patrolSpeedFraction: 0.2
 --- !u!1001 &6230053623604327600
 PrefabInstance:
   m_ObjectHideFlags: 0

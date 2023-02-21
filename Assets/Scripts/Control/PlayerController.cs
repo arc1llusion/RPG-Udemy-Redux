@@ -80,7 +80,7 @@ namespace RPG.Control
             {
                 if (actions.Main.Movement.ReadValue<float>() == 1)
                 {
-                    mover.StartMoveAction(hitInfo.point);
+                    mover.StartMoveAction(hitInfo.point, 1f);
                 }
                 return true;
             }

@@ -441,10 +441,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2058497040}
   - {fileID: 2003237541}
   - {fileID: 144990594}
   - {fileID: 1522295482}
-  - {fileID: 2058497040}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -613,7 +613,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 608855926126580154, guid: 4449ef34f8d275c43816533da4e387aa, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 608855926126580154, guid: 4449ef34f8d275c43816533da4e387aa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -663,6 +663,10 @@ PrefabInstance:
       propertyPath: patrolPath
       value: 
       objectReference: {fileID: 1886087313}
+    - target: {fileID: 4045162084863011120, guid: 4449ef34f8d275c43816533da4e387aa, type: 3}
+      propertyPath: maxSpeed
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4449ef34f8d275c43816533da4e387aa, type: 3}
 --- !u!1001 &815765463
@@ -674,7 +678,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 608855926126580154, guid: 4449ef34f8d275c43816533da4e387aa, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 608855926126580154, guid: 4449ef34f8d275c43816533da4e387aa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -854,7 +858,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 608855926126580154, guid: 4449ef34f8d275c43816533da4e387aa, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 608855926126580154, guid: 4449ef34f8d275c43816533da4e387aa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1038,6 +1042,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1395615516}
     m_Modifications:
+    - target: {fileID: 554498445583829069, guid: c01fa44dd6356a4488e2b276ee24fc35, type: 3}
+      propertyPath: healthPoints
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 2718273852655226146, guid: c01fa44dd6356a4488e2b276ee24fc35, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1540,7 +1548,7 @@ Transform:
   - {fileID: 1886087314}
   - {fileID: 1776224237386582347}
   m_Father: {fileID: 488218803}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2090509342
 PrefabInstance:
