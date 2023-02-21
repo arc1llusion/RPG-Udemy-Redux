@@ -19,6 +19,12 @@ namespace RPG.Control
         [SerializeField]
         private float suspicionTime = 3f;
 
+        [SerializeField]
+        private PatrolPath patrolPath;
+
+        [SerializeField]
+        private float waypointTolerance = 1.0f;
+
         private ChangePlayerPositionSignal changePlayerPositionSignal;
         private Fighter fighter;
         private Health health;
@@ -31,6 +37,8 @@ namespace RPG.Control
         private GameObject player = null;
         private Vector3 playerPosition;
         private bool canSeePlayer = false;
+
+        private int currentWaypointIndex = 0;
 
         private void Awake()
         {
@@ -73,7 +81,7 @@ namespace RPG.Control
             }
             else
             {
-                GuardBehavior();
+                PatrolBehavior();
             }
         }
 
@@ -96,9 +104,36 @@ namespace RPG.Control
             actionScheduler.CancelCurrentAction();
         }
 
-        private void GuardBehavior()
+        private void PatrolBehavior()
         {
-            mover.StartMoveAction(guardPosition);
+            Vector3 nextPosition = guardPosition;
+
+            if(patrolPath != null)
+            {
+                if(AtWaypoint())
+                {
+                    CycleWaypoint();
+                }
+
+                nextPosition = GetCurrentWaypoint();
+            }
+
+            mover.StartMoveAction(nextPosition);
+        }
+
+        private Vector3 GetCurrentWaypoint()
+        {
+            return patrolPath.GetWaypointPosition(currentWaypointIndex);
+        }
+
+        private void CycleWaypoint()
+        {
+            currentWaypointIndex = patrolPath.GetNextIndex(currentWaypointIndex);
+        }
+
+        private bool AtWaypoint()
+        {
+            return Vector3.Distance(GetCurrentWaypoint(), transform.position) <= waypointTolerance;
         }
 
         private void OnDrawGizmosSelected()
