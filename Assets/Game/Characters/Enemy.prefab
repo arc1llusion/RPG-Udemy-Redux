@@ -126,7 +126,7 @@ MonoBehaviour:
   patrolPath: {fileID: 0}
   waypointTolerance: 0.5
   waypointDwellTime: 2
-  patrolSpeedFraction: 0.2
+  patrolSpeedFraction: 0.45
 --- !u!1001 &6230053623604327600
 PrefabInstance:
   m_ObjectHideFlags: 0
