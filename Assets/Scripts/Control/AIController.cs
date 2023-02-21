@@ -53,5 +53,10 @@ namespace RPG.Control
                 fighter.Cancel();
             }
         }
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(transform.position, chaseDistance);
+        }
     }
 }
