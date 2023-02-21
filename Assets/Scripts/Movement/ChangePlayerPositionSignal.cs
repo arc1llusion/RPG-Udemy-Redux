@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace RPG.Movement.Signals
 {
-    public class ChangePlayerPositionSignal : ASignal<Vector3>
+    public class ChangePlayerPositionSignal : ASignal<GameObject, Vector3>
     {
     }
 }

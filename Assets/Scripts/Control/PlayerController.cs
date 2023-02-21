@@ -55,12 +55,13 @@ namespace RPG.Control
             foreach (var hit in hits)
             {
                 var target = hit.transform.GetComponent<CombatTarget>();
+                if (target == null) continue;
                 
-                if (!fighter.CanAttack(target)) continue;
+                if (!fighter.CanAttack(target.gameObject)) continue;
 
                 if (actions.Main.Movement.WasPressedThisFrame())
                 {
-                    fighter.Attack(target);
+                    fighter.Attack(target.gameObject);
                 }
 
                 return true;
@@ -85,7 +86,7 @@ namespace RPG.Control
 
         private void LateUpdate()
         {
-            changePlayerPositionSignal.Dispatch(transform.position);
+            changePlayerPositionSignal.Dispatch(gameObject, transform.position);
         }
 
         public void OnMovement(InputAction.CallbackContext context)

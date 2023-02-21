@@ -17,7 +17,7 @@ namespace RPG.Core
             changePlayerPositionSignal.AddListener(Follow);
         }
 
-        private void Follow(Vector3 position)
+        private void Follow(GameObject player, Vector3 position)
         {
             transform.position = position;
         }
