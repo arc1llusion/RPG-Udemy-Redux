@@ -36,6 +36,7 @@ namespace RPG.Combat
             if (Vector3.Distance(target.transform.position, transform.position) >= weaponRange)
             {
                 mover.MoveTo(target.transform.position);
+                StopAttack();
             }
             else
             {
