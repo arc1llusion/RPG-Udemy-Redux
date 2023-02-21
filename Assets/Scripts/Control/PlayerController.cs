@@ -1,5 +1,6 @@
 using deVoid.Utils;
 using RPG.Combat;
+using RPG.Core;
 using RPG.Movement;
 using RPG.Movement.Signals;
 using System;
@@ -13,6 +14,7 @@ namespace RPG.Control
         private Actions actions;
         private Mover mover;
         private Fighter fighter;
+        private Health health;
 
         private Vector2 mousePosition;
 
@@ -22,6 +24,7 @@ namespace RPG.Control
         {
             mover = GetComponent<Mover>();
             fighter = GetComponent<Fighter>();
+            health = GetComponent<Health>();
             changePlayerPositionSignal = Signals.Get<ChangePlayerPositionSignal>();
         }
 
@@ -43,6 +46,7 @@ namespace RPG.Control
 
         private void Update()
         {
+            if (health.IsDead()) return;
             if (InteractWithCombat()) return;
             if (InteractWithMovement()) return;
 

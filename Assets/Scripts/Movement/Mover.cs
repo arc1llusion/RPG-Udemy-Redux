@@ -10,6 +10,7 @@ namespace RPG.Movement
         private NavMeshAgent agent;
         private Animator animator;
         private ActionScheduler scheduler;
+        private Health health;
 
         // Start is called before the first frame update
         void Awake()
@@ -17,10 +18,12 @@ namespace RPG.Movement
             agent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
             scheduler = GetComponent<ActionScheduler>();
+            health = GetComponent<Health>();
         }
 
         void Update()
         {
+            agent.enabled = !health.IsDead();
             UpdateAnimator();
         }
 

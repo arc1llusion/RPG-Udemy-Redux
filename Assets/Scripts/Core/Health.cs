@@ -9,6 +9,7 @@ namespace RPG.Core
         [SerializeField] private float healthPoints = 100f;
         
         private Animator animator;
+        private ActionScheduler scheduler;
         private bool isDead = false;
 
         public bool IsDead()
@@ -19,6 +20,7 @@ namespace RPG.Core
         private void Awake()
         {
             animator = GetComponent<Animator>();
+            scheduler = GetComponent<ActionScheduler>();
         }
 
         public void TakeDamage(float damage)
@@ -38,6 +40,7 @@ namespace RPG.Core
 
             isDead = true;
             animator.SetTrigger("die");
+            scheduler.CancelCurrentAction();
         }
     }
 }
