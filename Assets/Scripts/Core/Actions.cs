@@ -44,15 +44,6 @@ public partial class @Actions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Attack"",
-                    ""type"": ""Button"",
-                    ""id"": ""0b717755-106b-4246-b7ea-916b6c679202"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -77,15 +68,52 @@ public partial class @Actions : IInputActionCollection2, IDisposable
                     ""action"": ""MousePosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""SaveSystem"",
+            ""id"": ""6350ff97-25ad-40bd-aec4-b69ae0387a73"",
+            ""actions"": [
+                {
+                    ""name"": ""Saving"",
+                    ""type"": ""Button"",
+                    ""id"": ""1b878dd7-b6b1-4dc3-8211-2990c2c4b7d3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Loading"",
+                    ""type"": ""Button"",
+                    ""id"": ""dd721af3-a654-48b2-ad30-83af7f8e86a5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
                     ""name"": """",
-                    ""id"": ""40372dee-bef6-489c-b668-47b8d5906895"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""id"": ""7507abff-9dc9-4d70-af5a-9d009db96f83"",
+                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Attack"",
+                    ""action"": ""Saving"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fb9dffcc-fe5d-4c70-94d1-a8965465a66a"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Loading"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -98,7 +126,10 @@ public partial class @Actions : IInputActionCollection2, IDisposable
         m_Main = asset.FindActionMap("Main", throwIfNotFound: true);
         m_Main_Movement = m_Main.FindAction("Movement", throwIfNotFound: true);
         m_Main_MousePosition = m_Main.FindAction("MousePosition", throwIfNotFound: true);
-        m_Main_Attack = m_Main.FindAction("Attack", throwIfNotFound: true);
+        // SaveSystem
+        m_SaveSystem = asset.FindActionMap("SaveSystem", throwIfNotFound: true);
+        m_SaveSystem_Saving = m_SaveSystem.FindAction("Saving", throwIfNotFound: true);
+        m_SaveSystem_Loading = m_SaveSystem.FindAction("Loading", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -160,14 +191,12 @@ public partial class @Actions : IInputActionCollection2, IDisposable
     private IMainActions m_MainActionsCallbackInterface;
     private readonly InputAction m_Main_Movement;
     private readonly InputAction m_Main_MousePosition;
-    private readonly InputAction m_Main_Attack;
     public struct MainActions
     {
         private @Actions m_Wrapper;
         public MainActions(@Actions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Main_Movement;
         public InputAction @MousePosition => m_Wrapper.m_Main_MousePosition;
-        public InputAction @Attack => m_Wrapper.m_Main_Attack;
         public InputActionMap Get() { return m_Wrapper.m_Main; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -183,9 +212,6 @@ public partial class @Actions : IInputActionCollection2, IDisposable
                 @MousePosition.started -= m_Wrapper.m_MainActionsCallbackInterface.OnMousePosition;
                 @MousePosition.performed -= m_Wrapper.m_MainActionsCallbackInterface.OnMousePosition;
                 @MousePosition.canceled -= m_Wrapper.m_MainActionsCallbackInterface.OnMousePosition;
-                @Attack.started -= m_Wrapper.m_MainActionsCallbackInterface.OnAttack;
-                @Attack.performed -= m_Wrapper.m_MainActionsCallbackInterface.OnAttack;
-                @Attack.canceled -= m_Wrapper.m_MainActionsCallbackInterface.OnAttack;
             }
             m_Wrapper.m_MainActionsCallbackInterface = instance;
             if (instance != null)
@@ -196,17 +222,59 @@ public partial class @Actions : IInputActionCollection2, IDisposable
                 @MousePosition.started += instance.OnMousePosition;
                 @MousePosition.performed += instance.OnMousePosition;
                 @MousePosition.canceled += instance.OnMousePosition;
-                @Attack.started += instance.OnAttack;
-                @Attack.performed += instance.OnAttack;
-                @Attack.canceled += instance.OnAttack;
             }
         }
     }
     public MainActions @Main => new MainActions(this);
+
+    // SaveSystem
+    private readonly InputActionMap m_SaveSystem;
+    private ISaveSystemActions m_SaveSystemActionsCallbackInterface;
+    private readonly InputAction m_SaveSystem_Saving;
+    private readonly InputAction m_SaveSystem_Loading;
+    public struct SaveSystemActions
+    {
+        private @Actions m_Wrapper;
+        public SaveSystemActions(@Actions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Saving => m_Wrapper.m_SaveSystem_Saving;
+        public InputAction @Loading => m_Wrapper.m_SaveSystem_Loading;
+        public InputActionMap Get() { return m_Wrapper.m_SaveSystem; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(SaveSystemActions set) { return set.Get(); }
+        public void SetCallbacks(ISaveSystemActions instance)
+        {
+            if (m_Wrapper.m_SaveSystemActionsCallbackInterface != null)
+            {
+                @Saving.started -= m_Wrapper.m_SaveSystemActionsCallbackInterface.OnSaving;
+                @Saving.performed -= m_Wrapper.m_SaveSystemActionsCallbackInterface.OnSaving;
+                @Saving.canceled -= m_Wrapper.m_SaveSystemActionsCallbackInterface.OnSaving;
+                @Loading.started -= m_Wrapper.m_SaveSystemActionsCallbackInterface.OnLoading;
+                @Loading.performed -= m_Wrapper.m_SaveSystemActionsCallbackInterface.OnLoading;
+                @Loading.canceled -= m_Wrapper.m_SaveSystemActionsCallbackInterface.OnLoading;
+            }
+            m_Wrapper.m_SaveSystemActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Saving.started += instance.OnSaving;
+                @Saving.performed += instance.OnSaving;
+                @Saving.canceled += instance.OnSaving;
+                @Loading.started += instance.OnLoading;
+                @Loading.performed += instance.OnLoading;
+                @Loading.canceled += instance.OnLoading;
+            }
+        }
+    }
+    public SaveSystemActions @SaveSystem => new SaveSystemActions(this);
     public interface IMainActions
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnMousePosition(InputAction.CallbackContext context);
-        void OnAttack(InputAction.CallbackContext context);
+    }
+    public interface ISaveSystemActions
+    {
+        void OnSaving(InputAction.CallbackContext context);
+        void OnLoading(InputAction.CallbackContext context);
     }
 }

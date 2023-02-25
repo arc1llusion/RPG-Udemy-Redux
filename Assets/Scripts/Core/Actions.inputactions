@@ -22,15 +22,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
-                },
-                {
-                    "name": "Attack",
-                    "type": "Button",
-                    "id": "0b717755-106b-4246-b7ea-916b6c679202",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -55,15 +46,52 @@
                     "action": "MousePosition",
                     "isComposite": false,
                     "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "SaveSystem",
+            "id": "6350ff97-25ad-40bd-aec4-b69ae0387a73",
+            "actions": [
+                {
+                    "name": "Saving",
+                    "type": "Button",
+                    "id": "1b878dd7-b6b1-4dc3-8211-2990c2c4b7d3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
+                    "name": "Loading",
+                    "type": "Button",
+                    "id": "dd721af3-a654-48b2-ad30-83af7f8e86a5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
                     "name": "",
-                    "id": "40372dee-bef6-489c-b668-47b8d5906895",
-                    "path": "<Keyboard>/space",
+                    "id": "7507abff-9dc9-4d70-af5a-9d009db96f83",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Attack",
+                    "action": "Saving",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fb9dffcc-fe5d-4c70-94d1-a8965465a66a",
+                    "path": "<Keyboard>/l",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Loading",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
