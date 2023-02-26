@@ -651,6 +651,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 2775581717945161882, guid: 4449ef34f8d275c43816533da4e387aa, type: 3}
+      propertyPath: uniqueIdentifer
+      value: 293abb99-a6bc-48a4-a70e-6f9297d9ba8e
+      objectReference: {fileID: 0}
     - target: {fileID: 3756231124553726756, guid: 4449ef34f8d275c43816533da4e387aa, type: 3}
       propertyPath: patrolPath
       value: 
@@ -1114,6 +1118,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 2775581717945161882, guid: 4449ef34f8d275c43816533da4e387aa, type: 3}
+      propertyPath: uniqueIdentifer
+      value: 04714de2-dc8f-4f83-b9c1-be6815d0e19c
+      objectReference: {fileID: 0}
     - target: {fileID: 3756231124553726756, guid: 4449ef34f8d275c43816533da4e387aa, type: 3}
       propertyPath: patrolPath
       value: 
@@ -1174,6 +1182,10 @@ PrefabInstance:
     - target: {fileID: 608855926126580158, guid: 4449ef34f8d275c43816533da4e387aa, type: 3}
       propertyPath: m_Name
       value: Enemy (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2775581717945161882, guid: 4449ef34f8d275c43816533da4e387aa, type: 3}
+      propertyPath: uniqueIdentifer
+      value: ee4f39d7-2b53-4184-87fc-fe62d9f44aca
       objectReference: {fileID: 0}
     - target: {fileID: 3756231124553726756, guid: 4449ef34f8d275c43816533da4e387aa, type: 3}
       propertyPath: patrolPath
@@ -1354,6 +1366,10 @@ PrefabInstance:
     - target: {fileID: 608855926126580158, guid: 4449ef34f8d275c43816533da4e387aa, type: 3}
       propertyPath: m_Name
       value: Enemy (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2775581717945161882, guid: 4449ef34f8d275c43816533da4e387aa, type: 3}
+      propertyPath: uniqueIdentifer
+      value: cf3ddd0b-0768-498a-bfd7-61f5eb063254
       objectReference: {fileID: 0}
     - target: {fileID: 3756231124553726756, guid: 4449ef34f8d275c43816533da4e387aa, type: 3}
       propertyPath: patrolPath
@@ -2714,6 +2730,10 @@ PrefabInstance:
     - target: {fileID: 3536459494681248476, guid: 31cfaf44efc47554aac8b30ba43b7081, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4204945219805485155, guid: 31cfaf44efc47554aac8b30ba43b7081, type: 3}
+      propertyPath: uniqueIdentifer
+      value: f5df0549-eaba-42dc-a20d-1a0ce872275e
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31cfaf44efc47554aac8b30ba43b7081, type: 3}

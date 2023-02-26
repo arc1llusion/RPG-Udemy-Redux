@@ -12,6 +12,7 @@ namespace RPG.Saving
     public class SaveableEntity : MonoBehaviour
     {
         [SerializeField]
+        [EditorReadOnly]
         private string uniqueIdentifer = "";
 
         public string GetUniqueIdentifier()
@@ -34,7 +35,7 @@ namespace RPG.Saving
             actionSchedular.CancelCurrentAction();
         }
 
-        public void Update()
+        public void OnValidate()
         {
 #if UNITY_EDITOR
             if (Application.IsPlaying(gameObject)) return;
@@ -45,7 +46,7 @@ namespace RPG.Saving
 
             if (string.IsNullOrEmpty(property.stringValue))
             {
-                uniqueIdentifer = System.Guid.NewGuid().ToString();
+                property.stringValue = System.Guid.NewGuid().ToString();
                 serializedObject.ApplyModifiedProperties();
             }
 #endif
