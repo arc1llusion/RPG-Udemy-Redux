@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
-namespace RPG.SceneMnagement
+namespace RPG.SceneManagement
 {
     public class Portal : MonoBehaviour
     {
@@ -67,6 +67,8 @@ namespace RPG.SceneMnagement
 
             Portal otherPortal = GetOtherPortal();
             UpdatePlayer(otherPortal);
+
+            savingWrapper.Save();
 
             yield return new WaitForSeconds(waitBetweenScenesTime);
             yield return fader.FadeIn(fadeInTime);

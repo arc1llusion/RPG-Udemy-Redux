@@ -8,7 +8,7 @@ namespace RPG.Core
     public class Health : MonoBehaviour, ISaveable
     {
         [SerializeField] private float healthPoints = 100f;
-        
+
         private Animator animator;
         private ActionScheduler scheduler;
         private bool isDead = false;
@@ -29,7 +29,7 @@ namespace RPG.Core
             healthPoints = Mathf.Max(healthPoints - damage, 0);
             Debug.Log(healthPoints, gameObject);
 
-            if(healthPoints == 0)
+            if (healthPoints == 0)
             {
                 Die();
             }
@@ -52,6 +52,11 @@ namespace RPG.Core
         public void RestoreState(object state)
         {
             healthPoints = (float)state;
+
+            if (healthPoints <= 0)
+            {
+                Die();
+            }
         }
     }
 }

@@ -51,9 +51,9 @@ namespace RPG.Saving
         {
         }
 
+#if UNITY_EDITOR
         public void OnValidate()
         {
-#if UNITY_EDITOR
             if (Application.IsPlaying(gameObject)) return;
             if (string.IsNullOrEmpty(gameObject.scene.path)) return;
 
@@ -63,11 +63,10 @@ namespace RPG.Saving
             if (string.IsNullOrEmpty(property.stringValue) || !IsUnique(property.stringValue))
             {
                 property.stringValue = System.Guid.NewGuid().ToString();
-                serializedObject.ApplyModifiedProperties();
+                serializedObject.ApplyModifiedPropertiesWithoutUndo();
             }
 
             globalEntities[property.stringValue] = this;
-#endif
         }
 
         private bool IsUnique(string candidate)
@@ -96,5 +95,7 @@ namespace RPG.Saving
 
             return false;
         }
+#endif
+
     }
 }
