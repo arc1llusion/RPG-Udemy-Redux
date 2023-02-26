@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -18,9 +20,12 @@ namespace RPG.Saving
             using (var stream = File.Open(path, FileMode.Create))
             {
                 Transform playerTransform = GetPlayerTransform();
-                stream.Write(SerializeVector(playerTransform.position));
+
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(stream, new SerializableVector3(playerTransform.position));
             }
         }
+
         public void Load(string saveFile)
         {
             string path = GetPathFromSaveFile(saveFile);
@@ -33,24 +38,13 @@ namespace RPG.Saving
 
             using (var stream = File.Open(path, FileMode.Open))
             {
-                byte[] buffer = new byte[stream.Length];
-                stream.Read(buffer, 0, buffer.Length);
+                var formatter = new BinaryFormatter();
+                var graph = formatter.Deserialize(stream);
 
-                var output = DeserializeVector(buffer);
-                GetPlayerTransform().position = output;
+                Transform playerTransform = GetPlayerTransform();
+                var sv3 = graph as SerializableVector3;
+                playerTransform.position = sv3.ToVector();
             }
-        }
-
-        private byte[] SerializeVector(Vector3 vector)
-        {
-            byte[] vectorBytes = new byte[3 * 4];
-
-            BitConverter.GetBytes(vector.x).CopyTo(vectorBytes, 0);
-            BitConverter.GetBytes(vector.y).CopyTo(vectorBytes, 4);
-            BitConverter.GetBytes(vector.z).CopyTo(vectorBytes, 8);
-
-            return vectorBytes;
-
         }
 
         private Vector3 DeserializeVector(byte[] buffer)
