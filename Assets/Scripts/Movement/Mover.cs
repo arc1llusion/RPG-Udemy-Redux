@@ -1,10 +1,11 @@
 using RPG.Core;
+using RPG.Saving;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace RPG.Movement
 {
-    public class Mover : MonoBehaviour, IAction
+    public class Mover : MonoBehaviour, IAction, ISaveable
     {
         [SerializeField]
         private float maxSpeed = 6.0f;
@@ -51,6 +52,17 @@ namespace RPG.Movement
         public void Cancel()
         {
             agent.isStopped = true;
+        }
+
+        public object CaptureState()
+        {
+            return new SerializableVector3(transform.position);
+        }
+
+        public void RestoreState(object state)
+        {
+            scheduler.CancelCurrentAction();
+            agent.Warp((state as SerializableVector3).ToVector());
         }
     }
 }

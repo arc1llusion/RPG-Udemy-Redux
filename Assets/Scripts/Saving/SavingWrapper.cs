@@ -17,6 +17,11 @@ namespace RPG.Saving
             savingSystem = GetComponent<SavingSystem>();
         }
 
+        private void Start()
+        {
+            Load();
+        }
+
         private void OnEnable()
         {
             if (actions == null)
@@ -39,9 +44,14 @@ namespace RPG.Saving
             {
                 if (savingSystem != null)
                 {
-                    savingSystem.Load(defaultSaveFile);
+                    Load();
                 }
             }
+        }
+
+        public void Load()
+        {
+            savingSystem.Load(defaultSaveFile);
         }
 
         public void OnSaving(InputAction.CallbackContext context)
@@ -50,9 +60,14 @@ namespace RPG.Saving
             {
                 if (savingSystem != null)
                 {
-                    savingSystem.Save(defaultSaveFile);
+                    Save();
                 }
             }
+        }
+
+        public void Save()
+        {
+            savingSystem.Save(defaultSaveFile);
         }
     }
 }

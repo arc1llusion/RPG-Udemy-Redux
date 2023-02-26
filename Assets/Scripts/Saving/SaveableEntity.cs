@@ -22,17 +22,28 @@ namespace RPG.Saving
 
         public object CaptureState()
         {
-            return new SerializableVector3(transform.position);
+            var state = new Dictionary<string, object>();
+            var saveables = GetComponents<ISaveable>();
+            foreach (var saveable in saveables)
+            {
+                state[saveable.GetType().ToString()] = saveable.CaptureState();
+            }
+
+            return state;
         }
 
         public void RestoreState(object state)
         {
-            var sv3 = state as SerializableVector3;
-            var agent = GetComponent<NavMeshAgent>();
-            var actionSchedular = GetComponent<ActionScheduler>();
+            var stateDict = state as Dictionary<string, object>;
+            var saveables = GetComponents<ISaveable>();
 
-            agent.Warp(sv3.ToVector());
-            actionSchedular.CancelCurrentAction();
+            foreach (var saveable in saveables)
+            {
+                if (stateDict.TryGetValue(saveable.GetType().ToString(), out var result))
+                {
+                    saveable.RestoreState(result);
+                }
+            }
         }
 
         public void OnValidate()

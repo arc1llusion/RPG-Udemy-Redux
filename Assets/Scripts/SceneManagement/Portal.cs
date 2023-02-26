@@ -1,5 +1,6 @@
 using RPG.Control;
 using RPG.Core;
+using RPG.Saving;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -56,7 +57,13 @@ namespace RPG.SceneMnagement
             yield return fader.FadeOut(fadeOutTime);
 
             DontDestroyOnLoad(this);
+
+            var savingWrapper = FindObjectOfType<SavingWrapper>();
+            savingWrapper.Save();
+
             yield return SceneManager.LoadSceneAsync(sceneToLoad);
+
+            savingWrapper.Load();
 
             Portal otherPortal = GetOtherPortal();
             UpdatePlayer(otherPortal);
