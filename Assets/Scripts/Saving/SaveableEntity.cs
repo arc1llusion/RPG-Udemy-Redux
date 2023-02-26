@@ -12,8 +12,9 @@ namespace RPG.Saving
     public class SaveableEntity : MonoBehaviour
     {
         [SerializeField]
-        [EditorReadOnly]
         private string uniqueIdentifer = "";
+
+        private static Dictionary<string, SaveableEntity> globalEntities = new Dictionary<string, SaveableEntity>();
 
         public string GetUniqueIdentifier()
         {
@@ -46,6 +47,10 @@ namespace RPG.Saving
             }
         }
 
+        private void Update()
+        {
+        }
+
         public void OnValidate()
         {
 #if UNITY_EDITOR
@@ -55,12 +60,41 @@ namespace RPG.Saving
             var serializedObject = new SerializedObject(this);
             var property = serializedObject.FindProperty(nameof(uniqueIdentifer));
 
-            if (string.IsNullOrEmpty(property.stringValue))
+            if (string.IsNullOrEmpty(property.stringValue) || !IsUnique(property.stringValue))
             {
                 property.stringValue = System.Guid.NewGuid().ToString();
                 serializedObject.ApplyModifiedProperties();
             }
+
+            globalEntities[property.stringValue] = this;
 #endif
+        }
+
+        private bool IsUnique(string candidate)
+        {
+            if(!globalEntities.ContainsKey(candidate))
+            {
+                return true;
+            }
+
+            if (globalEntities[candidate] == this)
+            {
+                return true;
+            }
+
+            if (globalEntities[candidate] == null)
+            {
+                globalEntities.Remove(candidate);
+                return true;
+            }
+
+            if (globalEntities[candidate].GetUniqueIdentifier() != candidate)
+            {
+                globalEntities.Remove(candidate);
+                return true;
+            }
+
+            return false;
         }
     }
 }
