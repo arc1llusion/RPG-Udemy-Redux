@@ -19,10 +19,8 @@ namespace RPG.Saving
 
             using (var stream = File.Open(path, FileMode.Create))
             {
-                Transform playerTransform = GetPlayerTransform();
-
                 BinaryFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(stream, new SerializableVector3(playerTransform.position));
+                formatter.Serialize(stream, CaptureState());
             }
         }
 
@@ -39,33 +37,43 @@ namespace RPG.Saving
             using (var stream = File.Open(path, FileMode.Open))
             {
                 var formatter = new BinaryFormatter();
-                var graph = formatter.Deserialize(stream);
-
-                Transform playerTransform = GetPlayerTransform();
-                var sv3 = graph as SerializableVector3;
-                playerTransform.position = sv3.ToVector();
+                RestoreState(formatter.Deserialize(stream));
             }
         }
 
-        private Vector3 DeserializeVector(byte[] buffer)
+        private object CaptureState()
         {
-            Vector3 position = new Vector3();
+            var state = new Dictionary<string, object>();
 
-            position.x = BitConverter.ToSingle(buffer, 0);
-            position.y = BitConverter.ToSingle(buffer, 4);
-            position.z = BitConverter.ToSingle(buffer, 8);
+            var saveableList = FindObjectsOfType<SaveableEntity>();
 
-            return position;
+            foreach(var saveable in saveableList)
+            {
+                state[saveable.GetUniqueIdentifier()] = saveable.CaptureState();
+            }
+
+            return state;
+        }
+
+        private void RestoreState(object state)
+        {
+            var stateDict = state as Dictionary<string, object>;
+
+            var saveableList = FindObjectsOfType<SaveableEntity>();
+
+            foreach(var saveable in saveableList)
+            {
+                var identifier = saveable.GetUniqueIdentifier();
+                if(stateDict.TryGetValue(identifier, out var result))
+                {
+                    saveable.RestoreState(result);
+                }
+            }
         }
 
         private string GetPathFromSaveFile(string saveFile)
         {
             return Path.Combine(Application.persistentDataPath, Path.ChangeExtension(saveFile, ".sav"));
-        }
-
-        private Transform GetPlayerTransform()
-        {
-            return GameObject.FindGameObjectWithTag("Player").transform;
         }
     }
 }
