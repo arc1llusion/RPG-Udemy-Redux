@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using RPG.Core;
 using RPG.Saving;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine.AI;
 
 namespace RPG.Movement
 {
-    public class Mover : MonoBehaviour, IAction, ISaveable
+    public class Mover : MonoBehaviour, IAction, IJsonSaveable
     {
         [SerializeField]
         private float maxSpeed = 6.0f;
@@ -54,15 +55,15 @@ namespace RPG.Movement
             agent.isStopped = true;
         }
 
-        public object CaptureState()
+        public JToken CaptureAsJToken()
         {
-            return new SerializableVector3(transform.position);
+            return transform.position.ToToken();
         }
 
-        public void RestoreState(object state)
+        public void RestoreFromJToken(JToken state)
         {
-            scheduler.CancelCurrentAction();
-            agent.Warp((state as SerializableVector3).ToVector());
+            agent.Warp(state.ToVector3());
+            GetComponent<ActionScheduler>().CancelCurrentAction();
         }
     }
 }

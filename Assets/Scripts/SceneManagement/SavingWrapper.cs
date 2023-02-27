@@ -9,7 +9,7 @@ namespace RPG.SceneManagement
     {
         private const string defaultSaveFile = "save";
 
-        private SavingSystem savingSystem;
+        private JsonSavingSystem savingSystem;
         private Actions actions;
 
         [SerializeField]
@@ -17,7 +17,7 @@ namespace RPG.SceneManagement
 
         private void Awake()
         {
-            savingSystem = GetComponent<SavingSystem>();
+            savingSystem = GetComponent<JsonSavingSystem>();
         }
 
         private IEnumerator Start()
