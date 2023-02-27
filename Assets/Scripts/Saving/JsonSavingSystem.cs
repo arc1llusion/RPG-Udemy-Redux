@@ -17,6 +17,8 @@ namespace RPG.Saving
         private const string lastBuildIndex = "lastBuildIndex";
         private const string extension = ".json";
 
+        [SerializeField] SavingStrategy strategy;
+
         public IEnumerator LoadLastScene(string saveFile)
         {
             var state = LoadJsonFromFile(saveFile);
@@ -39,22 +41,6 @@ namespace RPG.Saving
             SaveFileAsJson(saveFile, state);
         }
 
-        private void SaveFileAsJson(string saveFile, JObject state)
-        {
-            string path = GetPathFromSaveFile(saveFile);
-            Debug.Log("Saving to " + path);
-
-            using (var textWriter = File.CreateText(path))
-            {
-                using (var writer = new JsonTextWriter(textWriter))
-                {
-                    writer.Formatting = Formatting.Indented;
-                    state.WriteTo(writer);
-                }
-            }
-        }
-
-
         public void Load(string saveFile)
         {
             RestoreFromJToken(LoadJsonFromFile(saveFile));
@@ -64,7 +50,7 @@ namespace RPG.Saving
         {
             foreach (string path in Directory.EnumerateFiles(Application.persistentDataPath))
             {
-                if (Path.GetExtension(path) == extension)
+                if (Path.GetExtension(path) == strategy.Extension)
                 {
                     yield return Path.GetFileNameWithoutExtension(path);
                 }
@@ -73,23 +59,12 @@ namespace RPG.Saving
 
         private JObject LoadJsonFromFile(string saveFile)
         {
-            string path = GetPathFromSaveFile(saveFile);
-            Debug.Log("Loading from " + path);
+            return strategy.LoadFromFile(saveFile);
+        }
 
-            if (!File.Exists(path))
-            {
-                return new JObject();
-            }
-
-            using (var textReader = File.OpenText(path))
-            {
-                using (var reader = new JsonTextReader(textReader))
-                {
-                    reader.FloatParseHandling = FloatParseHandling.Double;
-
-                    return JObject.Load(reader);
-                }
-            }
+        private void SaveFileAsJson(string saveFile, JObject state)
+        {
+            strategy.SaveToFile(saveFile, state);
         }
 
         private void CaptureAsJToken(JObject state)
@@ -119,7 +94,7 @@ namespace RPG.Saving
 
         private string GetPathFromSaveFile(string saveFile)
         {
-            return Path.Combine(Application.persistentDataPath, Path.ChangeExtension(saveFile, extension));
+            return strategy.GetPathFromSaveFile(saveFile);
         }
     }
 }
