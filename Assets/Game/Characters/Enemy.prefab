@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 675598453, guid: 379377d08723d2e40bf81f97dd464b5a, type: 3}
+      propertyPath: weapon
+      value: 
+      objectReference: {fileID: 11400000, guid: 3135f3c1a42c2fb4a8ce2394191e0710, type: 2}
     - target: {fileID: 960261784, guid: 379377d08723d2e40bf81f97dd464b5a, type: 3}
       propertyPath: maxSpeed
       value: 3

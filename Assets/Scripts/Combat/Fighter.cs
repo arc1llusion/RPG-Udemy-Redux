@@ -12,12 +12,6 @@ namespace RPG.Combat
         private Animator animator;
 
         [SerializeField]
-        private float weaponRange = 2.0f;
-
-        [SerializeField]
-        private float weaponDamage = 5.0f;
-
-        [SerializeField]
         private float timeBetweenAttacks = 1.0f;
         private float timeSinceLastAttack = Mathf.Infinity;
 
@@ -47,7 +41,7 @@ namespace RPG.Combat
 
             if (target.IsDead()) return;
 
-            if (Vector3.Distance(target.transform.position, transform.position) >= weaponRange)
+            if (Vector3.Distance(target.transform.position, transform.position) >= weapon.Range)
             {
                 mover.MoveTo(target.transform.position, 1f);
                 StopAttack();
@@ -84,7 +78,7 @@ namespace RPG.Combat
         {
             if (target == null) return;
 
-            target.TakeDamage(weaponDamage);
+            target.TakeDamage(weapon.Damage);
         }
 
         public bool CanAttack(GameObject combatTarget)
