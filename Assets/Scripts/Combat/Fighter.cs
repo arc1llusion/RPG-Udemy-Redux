@@ -7,7 +7,7 @@ namespace RPG.Combat
     public class Fighter : MonoBehaviour, IAction
     {
         private Health target;
-        private Mover mover; 
+        private Mover mover;
         private ActionScheduler scheduler;
         private Animator animator;
 
@@ -21,11 +21,22 @@ namespace RPG.Combat
         private float timeBetweenAttacks = 1.0f;
         private float timeSinceLastAttack = Mathf.Infinity;
 
+        [SerializeField]
+        private Weapon weapon = null;
+
+        [SerializeField]
+        private Transform handTransform = null;
+
         private void Awake()
         {
             mover = GetComponent<Mover>();
             animator = GetComponent<Animator>();
             scheduler = GetComponent<ActionScheduler>();
+        }
+
+        private void Start()
+        {
+            SpawnWeapon();
         }
 
         private void Update()
@@ -45,6 +56,14 @@ namespace RPG.Combat
             {
                 mover.Cancel();
                 AttackBehavior();
+            }
+        }
+
+        private void SpawnWeapon()
+        {
+            if(weapon != null)
+            {
+                weapon.Spawn(handTransform, animator);
             }
         }
 

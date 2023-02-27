@@ -13,6 +13,7 @@ namespace RPG.Saving
     public class JsonSaveableEntity : MonoBehaviour
     {
         [SerializeField]
+        [EditorReadOnly]
         private string uniqueIdentifer = "";
 
         private static Dictionary<string, JsonSaveableEntity> globalEntities = new Dictionary<string, JsonSaveableEntity>();
