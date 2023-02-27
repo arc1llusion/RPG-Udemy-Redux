@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1705f792a5aa1cf45b70392cb6d500d8, type: 3}
   m_Name: XorTextStrategy
   m_EditorClassIdentifier: 
-  key: TheQuickBrownFoxJumpedOverTheLazyDog
+  key: 30c9d262-f3b5-4069-b678-c53656aed1d9
