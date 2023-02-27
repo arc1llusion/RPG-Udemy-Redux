@@ -23,7 +23,7 @@ namespace RPG.Saving
                 var buildIndex = (int)result;
                 if (buildIndex != SceneManager.GetActiveScene().buildIndex)
                 {
-                    yield return SceneManager.LoadSceneAsync((int)result);
+                    yield return SceneManager.LoadSceneAsync(buildIndex);
                 }
             }
             RestoreState(state);
