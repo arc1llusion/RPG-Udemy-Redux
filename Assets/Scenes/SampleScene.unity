@@ -1130,6 +1130,10 @@ PrefabInstance:
       propertyPath: patrolPath
       value: 
       objectReference: {fileID: 1886087313}
+    - target: {fileID: 4045162085118367709, guid: 4449ef34f8d275c43816533da4e387aa, type: 3}
+      propertyPath: defaultWeapon
+      value: 
+      objectReference: {fileID: 11400000, guid: 296a47d3cb74d77498048b4d9abdee57, type: 2}
     - target: {fileID: 8826526112468645251, guid: 4449ef34f8d275c43816533da4e387aa, type: 3}
       propertyPath: uniqueIdentifer
       value: 3e88d93c-52ac-44b6-922c-e9392f29cd5c

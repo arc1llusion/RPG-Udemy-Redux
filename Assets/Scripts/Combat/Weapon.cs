@@ -43,7 +43,7 @@ namespace RPG.Combat
         {
             Transform instTransform = GetTransform(rightHand, leftHand);
             Projectile projectileInstance = Instantiate(projectile, instTransform.position, Quaternion.identity);
-            projectileInstance.SetTarget(target);
+            projectileInstance.SetTarget(target, damage);
         }
 
         private Transform GetTransform(Transform rightHand, Transform leftHand)

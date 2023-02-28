@@ -13,6 +13,7 @@ namespace RPG.Combat
         private float speed = 5.0f;
 
         private Health target;
+        private float damage = 0.0f;
 
         // Update is called once per frame
         void Update()
@@ -24,9 +25,10 @@ namespace RPG.Combat
             }
         }
 
-        public void SetTarget(Health target)
+        public void SetTarget(Health target, float damage)
         {
             this.target = target;
+            this.damage = damage;
         }
 
         private Vector3 GetAimLocation()
@@ -39,6 +41,15 @@ namespace RPG.Combat
             }
 
             return target.transform.position + (Vector3.up * (targetCollider.height / 2));
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if(other.gameObject == target.gameObject)
+            {
+                target.TakeDamage(damage);
+                Destroy(this.gameObject);
+            }
         }
     }
 }
